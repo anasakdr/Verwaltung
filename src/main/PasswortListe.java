@@ -154,10 +154,11 @@ public class PasswortListe extends javax.swing.JPanel {
                 .addGap(34, 34, 34)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(passwortListe, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(suchFeld, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(suchFeld, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(passwortListe, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -168,9 +169,8 @@ public class PasswortListe extends javax.swing.JPanel {
                 .addGap(22, 22, 22))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void anzeigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anzeigenActionPerformed
-        suchFeld.setText("");
+public void zeigen(){
+    suchFeld.setText("");
         model = (DefaultTableModel) passwortTabelle.getModel();
         rowCount = model.getRowCount();
         //Löcht alle zeile von unsere Tabelle
@@ -233,6 +233,9 @@ public class PasswortListe extends javax.swing.JPanel {
                 Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+}
+    private void anzeigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anzeigenActionPerformed
+        zeigen();
     }//GEN-LAST:event_anzeigenActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -271,8 +274,7 @@ public class PasswortListe extends javax.swing.JPanel {
                         ps = Utils.getConnection().prepareStatement("DELETE FROM  keyring WHERE ID=?");
                         ps.setInt(1, passID);
                         ps.executeUpdate();
-                        //Gruppe.liste();
-                        JOptionPane.showMessageDialog(null, "Passwort erfolgreich gelöscht");
+                        zeigen();
 
                     } catch (SQLException ex) {
                         Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
@@ -325,6 +327,7 @@ public class PasswortListe extends javax.swing.JPanel {
                         ps.setInt(2, passID);
                         ps.executeUpdate();
                         JOptionPane.showMessageDialog(null, "Passwort erfolgreich gelöscht");
+                        zeigen();
                     } catch (SQLException ex) {
                         JOptionPane.showMessageDialog(null, "Ein Fehler ist aufgetreten");
                     }
