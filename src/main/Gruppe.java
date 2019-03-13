@@ -281,7 +281,7 @@ public class Gruppe extends javax.swing.JPanel {
     private void gruppenLöschenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gruppenLöschenActionPerformed
        if (comboListe.getSelectedItem() != null) {
             String name = comboListe.getSelectedItem().toString().toUpperCase();
-            int ii = JOptionPane.showConfirmDialog(null, "Sind Sie sicher, dass Sie die Gruppe  '" + name + "'  löschen möchten?", "Sicherheit Frage", JOptionPane.OK_CANCEL_OPTION);
+            int ii = JOptionPane.showConfirmDialog(null, "Sind Sie sicher, dass Sie die Gruppe  '" + name + "'  löschen möchten?", "Sicherheitsabfrage", JOptionPane.OK_CANCEL_OPTION);
             if (ii == JOptionPane.OK_OPTION) {
                 try {
                     ps = Utils.getConnection().prepareStatement("DELETE FROM  gruppen WHERE Name=?");
@@ -296,10 +296,10 @@ public class Gruppe extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(null, "Das Gruppe konnte nicht gelöscht werden");
                 }
             } else if (ii == JOptionPane.CANCEL_OPTION) {
-                JOptionPane.showMessageDialog(null, ":)", "Sicherheit Frage", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, ":)", "Sicherheitsabfrage", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Sie haben keine Gruppe");
+            JOptionPane.showMessageDialog(null, "keine Gruppe ausgewählt");
             return;
         }
     }//GEN-LAST:event_gruppenLöschenActionPerformed
@@ -367,7 +367,7 @@ public class Gruppe extends javax.swing.JPanel {
                 return;
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Sie haben keine Gruppe");
+            JOptionPane.showMessageDialog(null, "Sie haben keine Gruppe ausgewählt");
             return;
         }
     }//GEN-LAST:event_addBActionPerformed
@@ -382,7 +382,7 @@ public class Gruppe extends javax.swing.JPanel {
         /// wenn die user nicht selected
         if (mitglieder.getSelectedRow() > 0) {
             String sss = model.getValueAt(selectedRow, 1).toString();
-            int ii = JOptionPane.showConfirmDialog(null, "Sind Sie sicher?", "Sicherheit Frage", JOptionPane.OK_CANCEL_OPTION);
+            int ii = JOptionPane.showConfirmDialog(null, "Sind Sie sicher, dass Sie den Benutzer löschen wollen?", "Sicherheitsabfrage", JOptionPane.OK_CANCEL_OPTION);
             // wenn die antwort okay ist
             if (ii == JOptionPane.OK_OPTION) {
                 try {
@@ -404,7 +404,7 @@ public class Gruppe extends javax.swing.JPanel {
                     ps.setInt(1, userid);
                     ps.executeUpdate();
                     Gruppe.liste();
-                    JOptionPane.showMessageDialog(null, "Benutzer erfolgreich gelöscht");
+                    JOptionPane.showMessageDialog(null, "Benutzer erfolgreich aus der Gruppe gelöscht");
                     show1();
                 } catch (SQLException ex) {
                     Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
@@ -413,7 +413,7 @@ public class Gruppe extends javax.swing.JPanel {
                 }
 
             } else if (ii == JOptionPane.CANCEL_OPTION) {
-                JOptionPane.showMessageDialog(null, ":)", "Sicherheit Frage", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, ":)", "Sicherheitsabfrage", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Kein Benutzer ausgewählt");

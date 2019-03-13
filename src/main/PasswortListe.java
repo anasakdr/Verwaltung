@@ -57,7 +57,7 @@ public class PasswortListe extends javax.swing.JPanel {
         passwortListe = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         passwortTabelle = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        löschenB = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         anzeigen = new javax.swing.JButton();
         suchFeld = new javax.swing.JTextField();
@@ -86,12 +86,12 @@ public class PasswortListe extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(passwortTabelle);
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(60, 15, 108));
-        jButton1.setText("Löschen");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        löschenB.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        löschenB.setForeground(new java.awt.Color(60, 15, 108));
+        löschenB.setText("Löschen");
+        löschenB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                löschenBActionPerformed(evt);
             }
         });
 
@@ -135,7 +135,7 @@ public class PasswortListe extends javax.swing.JPanel {
                 .addGap(129, 129, 129)
                 .addComponent(jButton2)
                 .addGap(96, 96, 96)
-                .addComponent(jButton1)
+                .addComponent(löschenB)
                 .addGap(106, 106, 106)
                 .addComponent(anzeigen)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -164,7 +164,7 @@ public class PasswortListe extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(löschenB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(anzeigen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(22, 22, 22))
         );
@@ -238,7 +238,7 @@ public void zeigen(){
         zeigen();
     }//GEN-LAST:event_anzeigenActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void löschenBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_löschenBActionPerformed
        int ii = 0;
         int passID = 0;
         int passGID = 0;
@@ -254,7 +254,7 @@ public void zeigen(){
         if (passwortTabelle.getSelectedRow()>=0) {
             String sss = model.getValueAt(selectedRow, 1).toString();
             if (passwortListe.getSelectedItem().toString() == "Privat") {
-                ii = JOptionPane.showConfirmDialog(null, "Sind Sie sicher?", "Sicherheit Frage", JOptionPane.OK_CANCEL_OPTION);
+                ii = JOptionPane.showConfirmDialog(null, "Sind Sie sicher, dass Sie dieses Passwort löschen wollen?", "Sicherheitsabfrage", JOptionPane.OK_CANCEL_OPTION);
                 if (ii == JOptionPane.OK_OPTION) {
 
                     try {
@@ -283,7 +283,7 @@ public void zeigen(){
                     }
 
                 } else if (ii == JOptionPane.CANCEL_OPTION) {
-                    JOptionPane.showMessageDialog(null, ":)", "Sicherheit Frage", JOptionPane.ERROR_MESSAGE);
+                   // JOptionPane.showMessageDialog(null, ":)", "Sicherheitsabfrage", JOptionPane.ERROR_MESSAGE);
                 }
             } else {//wenn offentlisch ist
                 String sssr = model.getValueAt(selectedRow, 2).toString();
@@ -315,7 +315,7 @@ public void zeigen(){
                     Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-                ii = JOptionPane.showConfirmDialog(null, "Sind Sie sicher?", "Sicherheit Frage", JOptionPane.OK_CANCEL_OPTION);
+                ii = JOptionPane.showConfirmDialog(null, "Sind Sie sicher, dass Sie dieses Passwort löschen wollen?", "Sicherheitsabfrage", JOptionPane.OK_CANCEL_OPTION);
             }
             if (ii == JOptionPane.OK_OPTION) {
                 {
@@ -334,12 +334,12 @@ public void zeigen(){
                 }
 
             } else if (ii == JOptionPane.CANCEL_OPTION) {
-                JOptionPane.showMessageDialog(null, ":)", "Sicherheit Frage", JOptionPane.ERROR_MESSAGE);
+             //   JOptionPane.showMessageDialog(null, ":)", "Sicherheitsabfrage", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Kein Passwort ausgewählt ");
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_löschenBActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
        Main.cl.show(Main.cardPanel, "UserMenue");
@@ -359,7 +359,7 @@ public void zeigen(){
         for (int i = rowCount - 1; i >= 0; i--) {
             model.removeRow(i);
         }
-        if (passwortListe.getSelectedItem().toString() == "Private") {
+        if (passwortListe.getSelectedItem().toString() == "Privat") {
             try {
                 String query = "SELECT * FROM keyring WHERE verwendung LIKE ? AND userid=?";
 
@@ -397,11 +397,11 @@ public void zeigen(){
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anzeigen;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton löschenB;
     private javax.swing.JComboBox passwortListe;
     private javax.swing.JTable passwortTabelle;
     private javax.swing.JTextField suchFeld;
