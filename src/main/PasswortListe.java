@@ -6,6 +6,7 @@
 package main;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
@@ -18,7 +19,12 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.sound.midi.Soundbank;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import static main.Gruppe.ps;
 import static main.Gruppe.rs;
 
@@ -52,15 +58,35 @@ public class PasswortListe extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        Ändern = new javax.swing.JMenuItem();
+        Löschen = new javax.swing.JMenuItem();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         passwortListe = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         passwortTabelle = new javax.swing.JTable();
-        löschenB = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         anzeigen = new javax.swing.JButton();
         suchFeld = new javax.swing.JTextField();
+
+        Ändern.setIcon(new javax.swing.ImageIcon("C:\\Users\\aalakdr\\Desktop\\exchange.png")); // NOI18N
+        Ändern.setText("Ändern");
+        Ändern.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ÄndernActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(Ändern);
+
+        Löschen.setIcon(new javax.swing.ImageIcon("C:\\Users\\aalakdr\\Desktop\\delete-photo.png")); // NOI18N
+        Löschen.setText("Löschen");
+        Löschen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LöschenActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(Löschen);
 
         setBackground(new java.awt.Color(11, 102, 122));
 
@@ -76,6 +102,7 @@ public class PasswortListe extends javax.swing.JPanel {
         passwortListe.setForeground(new java.awt.Color(60, 15, 108));
         passwortListe.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Privat", "Öffentlich" }));
 
+        passwortTabelle.setAutoCreateRowSorter(true);
         passwortTabelle.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -84,16 +111,17 @@ public class PasswortListe extends javax.swing.JPanel {
                 "Passwort", "Verwendung", "Gruppenname"
             }
         ));
-        jScrollPane1.setViewportView(passwortTabelle);
-
-        löschenB.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        löschenB.setForeground(new java.awt.Color(60, 15, 108));
-        löschenB.setText("Löschen");
-        löschenB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                löschenBActionPerformed(evt);
+        passwortTabelle.setRowSelectionAllowed(true);
+        passwortTabelle.setUpdateSelectionOnSort(false);
+        passwortTabelle.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                passwortTabelleMouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                passwortTabelleMouseReleased(evt);
             }
         });
+        jScrollPane1.setViewportView(passwortTabelle);
 
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton2.setForeground(new java.awt.Color(60, 15, 108));
@@ -134,9 +162,7 @@ public class PasswortListe extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(129, 129, 129)
                 .addComponent(jButton2)
-                .addGap(96, 96, 96)
-                .addComponent(löschenB)
-                .addGap(106, 106, 106)
+                .addGap(281, 281, 281)
                 .addComponent(anzeigen)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -164,13 +190,12 @@ public class PasswortListe extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
-                    .addComponent(löschenB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(anzeigen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(22, 22, 22))
         );
     }// </editor-fold>//GEN-END:initComponents
-public void zeigen(){
-    suchFeld.setText("");
+public void zeigen() {
+        suchFeld.setText("");
         model = (DefaultTableModel) passwortTabelle.getModel();
         rowCount = model.getRowCount();
         //Löcht alle zeile von unsere Tabelle
@@ -233,13 +258,244 @@ public void zeigen(){
                 Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-}
+    }
     private void anzeigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anzeigenActionPerformed
         zeigen();
     }//GEN-LAST:event_anzeigenActionPerformed
 
-    private void löschenBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_löschenBActionPerformed
-       int ii = 0;
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Main.cl.show(Main.cardPanel, "UserMenue");
+        suchFeld.setText("");
+        model = (DefaultTableModel) passwortTabelle.getModel();
+        rowCount = model.getRowCount();
+        for (int i = rowCount - 1; i >= 0; i--) {
+            model.removeRow(i);
+
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void suchFeldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_suchFeldKeyReleased
+        model = (DefaultTableModel) passwortTabelle.getModel();
+        rowCount = model.getRowCount();
+        //Löcht alle zeile von unsere Tabelle
+        for (int i = rowCount - 1; i >= 0; i--) {
+            model.removeRow(i);
+        }
+        if (passwortListe.getSelectedItem().toString() == "Privat") {
+            try {
+                String query = "SELECT * FROM keyring WHERE verwendung LIKE ? AND userid=?";
+
+                ps = Utils.getConnection().prepareStatement(query);
+                ps.setString(1, suchFeld.getText() + "%");
+                ps.setInt(2, Main.userId);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    // if (passwortListe.getSelectedIndex() == rs.getInt(5) || passwortListe.getSelectedIndex() == 2) {
+                    model.addRow(new Object[]{rs.getString(3), rs.getString(4)});
+                    // }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                String query = "SELECT  gp.passwort,gp.Verwendung,gr.Name FROM gruppenxmitglieder gm,gruppenxpasswort gp ,gruppen gr ,users us WHERE  gp.gruppenid=gr.ID AND gm.gruppenid=gp.gruppenid AND us.ID=gm.userid AND gm.userid=? AND gp.Verwendung like ?";
+
+                ps = Utils.getConnection().prepareStatement(query);
+                ps.setInt(1, Main.userId);
+                ps.setString(2, suchFeld.getText() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    // if (passwortListe.getSelectedIndex() == rs.getInt(5) || passwortListe.getSelectedIndex() == 2) {
+                    model.addRow(new Object[]{rs.getString("gp.passwort"), rs.getString("gp.Verwendung"), rs.getString("gr.Name")});
+                    // }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_suchFeldKeyReleased
+
+    private void passwortTabelleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_passwortTabelleMouseClicked
+        /*boolean a=passwortTabelle.isEditing();
+         if(a==false){
+         JOptionPane.showMessageDialog(null,"Sie Können das Passwort beim 'ÄNDERN Knobf' ändern");
+         }*/
+        //    int index=passwortTabelle.getSelectedRow();
+        //   TableModel model=passwortTabelle.getModel();
+      /* passwortTabelle.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+         ListSelectionModel model=passwortTabelle.getSelectionModel();
+         model.addListSelectionListener(new ListSelectionListener() {
+
+         @Override
+         public void valueChanged(ListSelectionEvent e) {
+         if(e.getValueIsAdjusting())
+         {
+         return;
+         }
+         ListSelectionModel ism=(ListSelectionModel)e.getSource();
+         if(ism.isSelectionEmpty())
+         {
+         JOptionPane.showMessageDialog(null,"no ");
+         }else
+         {
+         int selectedRow=ism.getMinSelectionIndex();
+         JOptionPane.showMessageDialog(null, "Selected Row "+selectedRow);
+         }
+         }
+         });*/
+    }//GEN-LAST:event_passwortTabelleMouseClicked
+
+    private void passwortTabelleMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_passwortTabelleMouseReleased
+        if (evt.isPopupTrigger()) {
+            jPopupMenu1.show(passwortTabelle, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_passwortTabelleMouseReleased
+
+    private void ÄndernActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ÄndernActionPerformed
+        int passID = 0;
+        int ii = 0;
+        int creatID = 0;
+        int selectedRow = passwortTabelle.getSelectedRow();
+        model = (DefaultTableModel) passwortTabelle.getModel();
+        /// wenn die passwort nicht selected
+        if (passwortTabelle.getSelectedRow() >= 0) {
+            String sss = model.getValueAt(selectedRow, 1).toString();
+            if (passwortListe.getSelectedItem().toString() == "Privat") {
+                ii = JOptionPane.showConfirmDialog(null, "Sind Sie sicher, dass Sie dieses Passwort ändern wollen?", "Sicherheitsabfrage", JOptionPane.OK_CANCEL_OPTION);
+                if (ii == JOptionPane.OK_OPTION) {
+                     try {
+                        String s = "SELECT ID FROM keyring WHERE Verwendung=? ";
+                        ps = Utils.getConnection().prepareStatement(s);
+
+                        ps.setString(1, sss);
+                        rs = ps.executeQuery();
+                        while (rs.next()) {
+                            passID = rs.getInt(1);
+                        }
+
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    JTextField passwort= new JTextField();
+                    JTextField verwendung = new JTextField();
+                    Object[] message = {"Neue Passwort", passwort,"Verwendungszweck", verwendung};
+
+                    JOptionPane pane = new JOptionPane(message ,JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+                    pane.createDialog(null, "Änderung des Passwort").setVisible(true);
+                      try {
+                        ps = Utils.getConnection().prepareStatement("UPDATE keyring SET Passwort=?,Verwendung=? WHERE ID=?");
+                        ps.setString(1, Utils.aesEncryption(passwort.getText()));
+                        ps.setString(2,verwendung.getText());
+                        ps.setInt(3, passID);
+                        ps.executeUpdate();
+                        zeigen();
+
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
+                        //Zeig mir Massege
+                        JOptionPane.showMessageDialog(null, "Passwort konnte nicht gelöscht werden");
+                    } catch (UnsupportedEncodingException ex) {
+                        Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (NoSuchAlgorithmException ex) {
+                        Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (NoSuchPaddingException ex) {
+                        Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (InvalidKeyException ex) {
+                        Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IllegalBlockSizeException ex) {
+                        Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (BadPaddingException ex) {
+                        Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }else//wenn nein geantwortet
+                {
+                    return;
+                }
+
+            } else//wenn öffentlich
+            {
+                ii = JOptionPane.showConfirmDialog(null, "Sind Sie sicher, dass Sie dieses Passwort ändern wollen?", "Sicherheitsabfrage", JOptionPane.OK_CANCEL_OPTION);
+                if (ii == JOptionPane.OK_OPTION) {
+                 String sssr = model.getValueAt(selectedRow, 2).toString();
+                try {
+                    String s = "SELECT creatorId FROM gruppen WHERE Name=? ";
+                    ps = Utils.getConnection().prepareStatement(s);
+
+                    ps.setString(1, sssr);
+                    rs = ps.executeQuery();
+                    while (rs.next()) {
+                        creatID = rs.getInt(1);
+                    }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                try {
+                    String s = "SELECT ID FROM gruppenxpasswort WHERE Verwendung=? ";
+                    ps = Utils.getConnection().prepareStatement(s);
+
+                    ps.setString(1, sss);
+                    rs = ps.executeQuery();
+                    while (rs.next()) {
+                        passID = rs.getInt(1);
+                    }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                JTextField passwort= new JTextField();
+                    JTextField verwendung = new JTextField();
+                    Object[] message = {"Neue Passwort", passwort,"Verwendungszweck", verwendung};
+
+                    JOptionPane pane = new JOptionPane(message ,JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+                    pane.createDialog(null, "Änderung des Passwort").setVisible(true);
+                    try {
+                            //String query = "UPDATE gruppenxpasswort SET passwort=?,Verwendung=? gruppenxpasswort INNER JOIN gruppen ON gruppen.ID = gruppenxpasswort.gruppenid WHERE gruppen.creatorId=? AND gruppenxpasswort.ID=?";
+                            String query = "UPDATE gruppenxpasswort INNER JOIN gruppen ON gruppen.ID = gruppenxpasswort.gruppenid SET passwort=?,Verwendung=? WHERE gruppen.creatorId=? AND gruppenxpasswort.ID=?";
+                            ps = Utils.getConnection().prepareStatement(query);
+                            ps.setString(1, Utils.aesEncryption(passwort.getText()));
+                            ps.setString(2, verwendung.getText());
+                            ps.setInt(3, Main.userId);
+                            ps.setInt(4, passID);
+                            if (ps.executeUpdate() == 1) {
+                                JOptionPane.showMessageDialog(null, "Passwort erfolgreich geändertt");
+                                zeigen();
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Sie haben keine Berechtigung dieses Passwort zu ändern");
+                                return;
+                            }
+                        } catch (SQLException ex) {
+                            JOptionPane.showMessageDialog(null, "Ein Fehler ist aufgetreten");
+                        } catch (UnsupportedEncodingException ex) {
+                        Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (NoSuchAlgorithmException ex) {
+                        Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (NoSuchPaddingException ex) {
+                        Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (InvalidKeyException ex) {
+                        Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IllegalBlockSizeException ex) {
+                        Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (BadPaddingException ex) {
+                        Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                }else//wenn öffentlich und antwortet nein
+                {
+                    return;
+                }
+            }
+        }else
+        {
+            JOptionPane.showMessageDialog(null,"Kein Passwort ausgewählt");
+            return;
+        }
+    }//GEN-LAST:event_ÄndernActionPerformed
+
+    private void LöschenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LöschenActionPerformed
+        int ii = 0;
         int passID = 0;
         int passGID = 0;
         int creatID = 0;
@@ -251,7 +507,7 @@ public void zeigen(){
 
         model = (DefaultTableModel) passwortTabelle.getModel();
         /// wenn die passwort nicht selected
-        if (passwortTabelle.getSelectedRow()>=0) {
+        if (passwortTabelle.getSelectedRow() >= 0) {
             String sss = model.getValueAt(selectedRow, 1).toString();
             if (passwortListe.getSelectedItem().toString() == "Privat") {
                 ii = JOptionPane.showConfirmDialog(null, "Sind Sie sicher, dass Sie dieses Passwort löschen wollen?", "Sicherheitsabfrage", JOptionPane.OK_CANCEL_OPTION);
@@ -283,7 +539,7 @@ public void zeigen(){
                     }
 
                 } else if (ii == JOptionPane.CANCEL_OPTION) {
-                   // JOptionPane.showMessageDialog(null, ":)", "Sicherheitsabfrage", JOptionPane.ERROR_MESSAGE);
+                    // JOptionPane.showMessageDialog(null, ":)", "Sicherheitsabfrage", JOptionPane.ERROR_MESSAGE);
                 }
             } else {//wenn offentlisch ist
                 String sssr = model.getValueAt(selectedRow, 2).toString();
@@ -316,94 +572,48 @@ public void zeigen(){
                 }
 
                 ii = JOptionPane.showConfirmDialog(null, "Sind Sie sicher, dass Sie dieses Passwort löschen wollen?", "Sicherheitsabfrage", JOptionPane.OK_CANCEL_OPTION);
-            }
-            if (ii == JOptionPane.OK_OPTION) {
-                {
-                    try {
-                        String query = "DELETE gruppenxpasswort FROM gruppenxpasswort INNER JOIN gruppen ON gruppen.ID = gruppenxpasswort.gruppenid WHERE gruppen.creatorId=? AND gruppenxpasswort.ID=?";
 
-                        ps = Utils.getConnection().prepareStatement(query);
-                        ps.setInt(1, Main.userId);
-                        ps.setInt(2, passID);
-                        ps.executeUpdate();
-                        JOptionPane.showMessageDialog(null, "Passwort erfolgreich gelöscht");
-                        zeigen();
-                    } catch (SQLException ex) {
-                        JOptionPane.showMessageDialog(null, "Ein Fehler ist aufgetreten");
+                if (ii == JOptionPane.OK_OPTION) {
+                    {
+                        try {
+                            String query = "DELETE gruppenxpasswort FROM gruppenxpasswort INNER JOIN gruppen ON gruppen.ID = gruppenxpasswort.gruppenid WHERE gruppen.creatorId=? AND gruppenxpasswort.ID=?";
+
+                            ps = Utils.getConnection().prepareStatement(query);
+                            ps.setInt(1, Main.userId);
+                            ps.setInt(2, passID);
+                            if (ps.executeUpdate() == 1) {
+                                JOptionPane.showMessageDialog(null, "Passwort erfolgreich gelöscht");
+                                zeigen();
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Sie haben keine Berechtigung dieses Passwort zu löschen");
+                                return;
+                            }
+                        } catch (SQLException ex) {
+                            JOptionPane.showMessageDialog(null, "Ein Fehler ist aufgetreten");
+                        }
                     }
-                }
 
-            } else if (ii == JOptionPane.CANCEL_OPTION) {
-             //   JOptionPane.showMessageDialog(null, ":)", "Sicherheitsabfrage", JOptionPane.ERROR_MESSAGE);
+                } else if (ii == JOptionPane.CANCEL_OPTION) {
+                    //   JOptionPane.showMessageDialog(null, ":)", "Sicherheitsabfrage", JOptionPane.ERROR_MESSAGE);
+                }
             }
         } else {
             JOptionPane.showMessageDialog(null, "Kein Passwort ausgewählt ");
         }
-    }//GEN-LAST:event_löschenBActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       Main.cl.show(Main.cardPanel, "UserMenue");
-        suchFeld.setText("");
-        model = (DefaultTableModel) passwortTabelle.getModel();
-        rowCount = model.getRowCount();
-        for (int i = rowCount - 1; i >= 0; i--) {
-            model.removeRow(i);
-
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void suchFeldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_suchFeldKeyReleased
-        model = (DefaultTableModel) passwortTabelle.getModel();
-        rowCount = model.getRowCount();
-        //Löcht alle zeile von unsere Tabelle
-        for (int i = rowCount - 1; i >= 0; i--) {
-            model.removeRow(i);
-        }
-        if (passwortListe.getSelectedItem().toString() == "Privat") {
-            try {
-                String query = "SELECT * FROM keyring WHERE verwendung LIKE ? AND userid=?";
-
-                ps = Utils.getConnection().prepareStatement(query);
-                ps.setString(1, suchFeld.getText() + "%");
-                ps.setInt(2, Main.userId);
-                rs = ps.executeQuery();
-                while (rs.next()) {
-                    // if (passwortListe.getSelectedIndex() == rs.getInt(5) || passwortListe.getSelectedIndex() == 2) {
-                        model.addRow(new Object[]{rs.getString(3), rs.getString(4)});
-                        // }
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            try {
-                String query = "SELECT  gp.passwort,gp.Verwendung,gr.Name FROM gruppenxmitglieder gm,gruppenxpasswort gp ,gruppen gr ,users us WHERE  gp.gruppenid=gr.ID AND gm.gruppenid=gp.gruppenid AND us.ID=gm.userid AND gm.userid=? AND gp.Verwendung like ?";
-
-                ps = Utils.getConnection().prepareStatement(query);
-                ps.setInt(1, Main.userId);
-                ps.setString(2, suchFeld.getText() + "%");
-                rs = ps.executeQuery();
-                while (rs.next()) {
-                    // if (passwortListe.getSelectedIndex() == rs.getInt(5) || passwortListe.getSelectedIndex() == 2) {
-                        model.addRow(new Object[]{rs.getString("gp.passwort"), rs.getString("gp.Verwendung"), rs.getString("gr.Name")});
-                        // }
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }//GEN-LAST:event_suchFeldKeyReleased
+    }//GEN-LAST:event_LöschenActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Löschen;
     private javax.swing.JButton anzeigen;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton löschenB;
     private javax.swing.JComboBox passwortListe;
     private javax.swing.JTable passwortTabelle;
     private javax.swing.JTextField suchFeld;
+    private javax.swing.JMenuItem Ändern;
     // End of variables declaration//GEN-END:variables
 }
