@@ -10,9 +10,6 @@
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="&#xc4;ndern">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\aalakdr\Desktop\exchange.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="&#xc4;ndern"/>
           </Properties>
           <Events>
@@ -21,9 +18,6 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="L&#xf6;schen">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\aalakdr\Desktop\delete-photo.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="L&#xf6;schen"/>
           </Properties>
           <Events>
@@ -162,7 +156,6 @@
                 <Column editable="true" title="Gruppenname" type="java.lang.Object"/>
               </Table>
             </Property>
-            <Property name="rowSelectionAllowed" type="boolean" value="true"/>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>

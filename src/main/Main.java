@@ -34,7 +34,7 @@ public class Main {
         cardPanel.add(new PasswortListe(),"PasswortListe");
         cardPanel.add(new Gruppe(),"Gruppe");
         JFrame frame = new JFrame("CardLayout-Demo");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(cardPanel, BorderLayout.CENTER);
         frame.pack();
         frame.setSize(cardPanel.getWidth(), cardPanel.getHeight());
