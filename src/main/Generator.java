@@ -336,11 +336,11 @@ public class Generator extends javax.swing.JPanel {
 
     private void privateBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_privateBActionPerformed
 
-        String s = "INSERT INTO keyring(userid,Passwort,Verwendung)VALUES(?,?,?)";
+        String s = "INSERT INTO private(userid,Passwort,Verwendung)VALUES(?,?,?)";
         PreparedStatement ps = null;
 
         if (!Utils.isEmpty(passF.getText(), verwendungFeld.getText())) {
-            String ss = "SELECT * FROM keyring WHERE Verwendung =? and userid=?";
+            String ss = "SELECT * FROM private WHERE Verwendung =? and userid=?";
             try {
                 ps = Utils.getConnection().prepareStatement(ss);
                 ps.setString(1, verwendungFeld.getText());
@@ -399,7 +399,7 @@ public class Generator extends javax.swing.JPanel {
             } catch (SQLException ex) {
                 Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
             }
-            String ss = "SELECT * FROM gruppenxpasswort WHERE Verwendung =? AND gruppenid=?";
+            String ss = "SELECT * FROM offentlich WHERE Verwendung =? AND gruppenid=?";
             try {
                 ps = Utils.getConnection().prepareStatement(ss);
                 ps.setString(1, verwendungFeld.getText());
@@ -412,7 +412,7 @@ public class Generator extends javax.swing.JPanel {
             } catch (SQLException ex) {
                 Logger.getLogger(Generator.class.getName()).log(Level.SEVERE, null, ex);
             }
-            s = "INSERT INTO gruppenxpasswort(passwort,gruppenid,Verwendung)VALUES(?,?,?)";
+            s = "INSERT INTO offentlich(passwort,gruppenid,Verwendung)VALUES(?,?,?)";
             PreparedStatement ps = null;
             if (!Utils.isEmpty(passF.getText(), verwendungFeld.getText())) {
                 try {

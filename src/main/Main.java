@@ -36,6 +36,7 @@ public class Main {
         JFrame frame = new JFrame("CardLayout-Demo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(cardPanel, BorderLayout.CENTER);
+        frame.setTitle("Passwort Verwaltung");
         frame.pack();
         frame.setSize(cardPanel.getWidth(), cardPanel.getHeight());
         frame.setLocationRelativeTo(null);

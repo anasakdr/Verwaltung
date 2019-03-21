@@ -204,7 +204,7 @@ public void zeigen() {
         }
         if (passwortListe.getSelectedItem().toString() == "Privat") {
             try {
-                String query = "SELECT * FROM keyring WHERE userid=?";
+                String query = "SELECT * FROM private WHERE userid=?";
 
                 ps = Utils.getConnection().prepareStatement(query);
                 ps.setInt(1, Main.userId);
@@ -231,7 +231,7 @@ public void zeigen() {
             }
         } else {
             try {
-                String query = "SELECT  g.passwort,g.Verwendung,ge.Name FROM gruppenxpasswort g ,gruppenxmitglieder m,gruppen ge \n"
+                String query = "SELECT  g.passwort,g.Verwendung,ge.Name FROM offentlich g ,gruppenxmitglieder m,gruppen ge \n"
                         + "WHERE g.gruppenid=m.gruppenid AND ge.ID=m.gruppenid AND m.userid=?";
 
                 ps = Utils.getConnection().prepareStatement(query);
@@ -283,7 +283,7 @@ public void zeigen() {
         }
         if (passwortListe.getSelectedItem().toString() == "Privat") {
             try {
-                String query = "SELECT * FROM keyring WHERE verwendung LIKE ? AND userid=?";
+                String query = "SELECT * FROM private WHERE verwendung LIKE ? AND userid=?";
 
                 ps = Utils.getConnection().prepareStatement(query);
                 ps.setString(1, suchFeld.getText() + "%");
@@ -299,7 +299,7 @@ public void zeigen() {
             }
         } else {
             try {
-                String query = "SELECT  gp.passwort,gp.Verwendung,gr.Name FROM gruppenxmitglieder gm,gruppenxpasswort gp ,gruppen gr ,users us WHERE  gp.gruppenid=gr.ID AND gm.gruppenid=gp.gruppenid AND us.ID=gm.userid AND gm.userid=? AND gp.Verwendung like ?";
+                String query = "SELECT  gp.passwort,gp.Verwendung,gr.Name FROM gruppenxmitglieder gm,offentlich gp ,gruppen gr ,users us WHERE  gp.gruppenid=gr.ID AND gm.gruppenid=gp.gruppenid AND us.ID=gm.userid AND gm.userid=? AND gp.Verwendung like ?";
 
                 ps = Utils.getConnection().prepareStatement(query);
                 ps.setInt(1, Main.userId);
@@ -317,33 +317,7 @@ public void zeigen() {
     }//GEN-LAST:event_suchFeldKeyReleased
 
     private void passwortTabelleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_passwortTabelleMouseClicked
-        /*boolean a=passwortTabelle.isEditing();
-         if(a==false){
-         JOptionPane.showMessageDialog(null,"Sie Können das Passwort beim 'ÄNDERN Knobf' ändern");
-         }*/
-        //    int index=passwortTabelle.getSelectedRow();
-        //   TableModel model=passwortTabelle.getModel();
-        /* passwortTabelle.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-         ListSelectionModel model=passwortTabelle.getSelectionModel();
-         model.addListSelectionListener(new ListSelectionListener() {
 
-         @Override
-         public void valueChanged(ListSelectionEvent e) {
-         if(e.getValueIsAdjusting())
-         {
-         return;
-         }
-         ListSelectionModel ism=(ListSelectionModel)e.getSource();
-         if(ism.isSelectionEmpty())
-         {
-         JOptionPane.showMessageDialog(null,"no ");
-         }else
-         {
-         int selectedRow=ism.getMinSelectionIndex();
-         JOptionPane.showMessageDialog(null, "Selected Row "+selectedRow);
-         }
-         }
-         });*/
     }//GEN-LAST:event_passwortTabelleMouseClicked
 
     private void passwortTabelleMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_passwortTabelleMouseReleased
@@ -361,13 +335,13 @@ public void zeigen() {
         /// wenn die passwort nicht selected
         if (passwortTabelle.getSelectedRow() >= 0) {
             String sss = model.getValueAt(selectedRow, 1).toString();
-              String pass = model.getValueAt(selectedRow, 0).toString();
-              String verwend = model.getValueAt(selectedRow, 1).toString();
+            String pass = model.getValueAt(selectedRow, 0).toString();
+            String verwend = model.getValueAt(selectedRow, 1).toString();
             if (passwortListe.getSelectedItem().toString() == "Privat") {
                 ii = JOptionPane.showConfirmDialog(null, "Sind Sie sicher, dass Sie dieses Passwort ändern wollen?", "Sicherheitsabfrage", JOptionPane.OK_CANCEL_OPTION);
                 if (ii == JOptionPane.OK_OPTION) {
                     try {
-                        String s = "SELECT ID FROM keyring WHERE Verwendung=? ";
+                        String s = "SELECT ID FROM private WHERE Verwendung=? ";
                         ps = Utils.getConnection().prepareStatement(s);
 
                         ps.setString(1, sss);
@@ -391,14 +365,14 @@ public void zeigen() {
                     }
                     if ((Integer) pane.getValue() == JOptionPane.OK_OPTION) {
                         try {
-                          
+
                             if (!passwort.getText().isEmpty()) {
                                 pass = passwort.getText();
                             }
                             if (!verwendung.getText().isEmpty()) {
                                 verwend = verwendung.getText();
                             }
-                            ps = Utils.getConnection().prepareStatement("UPDATE keyring SET Passwort=?,Verwendung=? WHERE ID=?");
+                            ps = Utils.getConnection().prepareStatement("UPDATE private SET Passwort=?,Verwendung=? WHERE ID=?");
                             ps.setString(1, Utils.aesEncryption(pass));
                             ps.setString(2, verwend);
                             ps.setInt(3, passID);
@@ -433,26 +407,30 @@ public void zeigen() {
 
             } else//wenn öffentlich
             {
-                
-                ii = JOptionPane.showConfirmDialog(null, "Sind Sie sicher, dass Sie dieses Passwort ändern wollen?", "Sicherheitsabfrage", JOptionPane.OK_CANCEL_OPTION);
-                if (ii == JOptionPane.OK_OPTION) {
-                    String sssr = model.getValueAt(selectedRow, 2).toString();
-                    try {
-                        String s = "SELECT creatorId FROM gruppen WHERE Name=? ";
-                        ps = Utils.getConnection().prepareStatement(s);
+                String sssr = model.getValueAt(selectedRow, 2).toString();
+                try {
+                    String s = "SELECT creatorId FROM gruppen WHERE Name=? ";
+                    ps = Utils.getConnection().prepareStatement(s);
 
-                        ps.setString(1, sssr);
-                        rs = ps.executeQuery();
-                        while (rs.next()) {
-                            creatID = rs.getInt(1);
-                        }
-
-                    } catch (SQLException ex) {
-                        Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
+                    ps.setString(1, sssr);
+                    rs = ps.executeQuery();
+                    while (rs.next()) {
+                        creatID = rs.getInt(1);
                     }
 
+                } catch (SQLException ex) {
+                    Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                //if haben keine berechtigung zu Löschen
+                if(creatID!=Main.userId){
+                   JOptionPane.showMessageDialog(null, "Sie haben keine Berechtigung dieses Passwort zu ändern"); 
+                   return;
+                }
+
+                ii = JOptionPane.showConfirmDialog(null, "Sind Sie sicher, dass Sie dieses Passwort ändern wollen?", "Sicherheitsabfrage", JOptionPane.OK_CANCEL_OPTION);
+                if (ii == JOptionPane.OK_OPTION) {
                     try {
-                        String s = "SELECT ID FROM gruppenxpasswort WHERE Verwendung=? ";
+                        String s = "SELECT ID FROM offentlich WHERE Verwendung=? ";
                         ps = Utils.getConnection().prepareStatement(s);
 
                         ps.setString(1, sss);
@@ -475,54 +453,53 @@ public void zeigen() {
                     }
                     if ((Integer) pane.getValue() == JOptionPane.OK_OPTION) {
                         try {
-                          
+
                             if (!passwort.getText().isEmpty()) {
                                 pass = passwort.getText();
                             }
                             if (!verwendung.getText().isEmpty()) {
                                 verwend = verwendung.getText();
                             }
-                    
-                        //String query = "UPDATE gruppenxpasswort SET passwort=?,Verwendung=? gruppenxpasswort INNER JOIN gruppen ON gruppen.ID = gruppenxpasswort.gruppenid WHERE gruppen.creatorId=? AND gruppenxpasswort.ID=?";
-                        String query = "UPDATE gruppenxpasswort INNER JOIN gruppen ON gruppen.ID = gruppenxpasswort.gruppenid SET passwort=?,Verwendung=? WHERE gruppen.creatorId=? AND gruppenxpasswort.ID=?";
-                        ps = Utils.getConnection().prepareStatement(query);
-                        ps.setString(1, Utils.aesEncryption(pass));
-                        ps.setString(2, verwend);
-                        ps.setInt(3, Main.userId);
-                        ps.setInt(4, passID);
-                        if (ps.executeUpdate() == 1) {
-                            JOptionPane.showMessageDialog(null, "Passwort erfolgreich geändertt");
-                            zeigen();
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Sie haben keine Berechtigung dieses Passwort zu ändern");
-                            return;
-                        }
-                    } catch (SQLException ex) {
-                        JOptionPane.showMessageDialog(null, "Ein Fehler ist aufgetreten");
-                    } catch (UnsupportedEncodingException ex) {
-                        Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (NoSuchAlgorithmException ex) {
-                        Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (NoSuchPaddingException ex) {
-                        Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (InvalidKeyException ex) {
-                        Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IllegalBlockSizeException ex) {
-                        Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (BadPaddingException ex) {
-                        Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
-                    }
 
-                } else
-                    {
+                            //String query = "UPDATE gruppenxpasswort SET passwort=?,Verwendung=? gruppenxpasswort INNER JOIN gruppen ON gruppen.ID = gruppenxpasswort.gruppenid WHERE gruppen.creatorId=? AND gruppenxpasswort.ID=?";
+                            String query = "UPDATE offentlich INNER JOIN gruppen ON gruppen.ID = offentlich.gruppenid SET passwort=?,Verwendung=? WHERE gruppen.creatorId=? AND offentlich.ID=?";
+                            ps = Utils.getConnection().prepareStatement(query);
+                            ps.setString(1, Utils.aesEncryption(pass));
+                            ps.setString(2, verwend);
+                            ps.setInt(3, Main.userId);
+                            ps.setInt(4, passID);
+                            if (ps.executeUpdate() == 1) {
+                                JOptionPane.showMessageDialog(null, "Passwort erfolgreich geändertt");
+                                zeigen();
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Sie haben keine Berechtigung dieses Passwort zu ändern");
+                                return;
+                            }
+                        } catch (SQLException ex) {
+                            JOptionPane.showMessageDialog(null, "Ein Fehler ist aufgetreten");
+                        } catch (UnsupportedEncodingException ex) {
+                            Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (NoSuchAlgorithmException ex) {
+                            Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (NoSuchPaddingException ex) {
+                            Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (InvalidKeyException ex) {
+                            Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (IllegalBlockSizeException ex) {
+                            Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (BadPaddingException ex) {
+                            Logger.getLogger(PasswortListe.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    } else {
                         return;
                     }
-                }else//wenn öffentlich und antwortet nein
+                } else//wenn öffentlich und antwortet nein
                 {
                     return;
                 }
             }
-        }else {
+        } else {
             JOptionPane.showMessageDialog(null, "Kein Passwort ausgewählt");
             return;
         }
@@ -548,7 +525,7 @@ public void zeigen() {
                 if (ii == JOptionPane.OK_OPTION) {
 
                     try {
-                        String s = "SELECT ID FROM keyring WHERE Verwendung=? ";
+                        String s = "SELECT ID FROM private WHERE Verwendung=? ";
                         ps = Utils.getConnection().prepareStatement(s);
 
                         ps.setString(1, sss);
@@ -561,7 +538,7 @@ public void zeigen() {
                         Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     try {
-                        ps = Utils.getConnection().prepareStatement("DELETE FROM  keyring WHERE ID=?");
+                        ps = Utils.getConnection().prepareStatement("DELETE FROM  private WHERE ID=?");
                         ps.setInt(1, passID);
                         ps.executeUpdate();
                         zeigen();
@@ -592,7 +569,7 @@ public void zeigen() {
                 }
 
                 try {
-                    String s = "SELECT ID FROM gruppenxpasswort WHERE Verwendung=? ";
+                    String s = "SELECT ID FROM offentlich WHERE Verwendung=? ";
                     ps = Utils.getConnection().prepareStatement(s);
 
                     ps.setString(1, sss);
@@ -610,7 +587,7 @@ public void zeigen() {
                 if (ii == JOptionPane.OK_OPTION) {
                     {
                         try {
-                            String query = "DELETE gruppenxpasswort FROM gruppenxpasswort INNER JOIN gruppen ON gruppen.ID = gruppenxpasswort.gruppenid WHERE gruppen.creatorId=? AND gruppenxpasswort.ID=?";
+                            String query = "DELETE offentlich FROM offentlich INNER JOIN gruppen ON gruppen.ID = offentlich.gruppenid WHERE gruppen.creatorId=? AND offentlich.ID=?";
 
                             ps = Utils.getConnection().prepareStatement(query);
                             ps.setInt(1, Main.userId);

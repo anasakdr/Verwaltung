@@ -153,16 +153,9 @@ PreparedStatement p = null;
                 rs = p.executeQuery();
                 if (rs.next()) {
                     Main.userId = rs.getInt(1);
-                    if (rs.getString(5).equals("1")) {
-
-                        Main.cl.show(Main.cardPanel, "AdminMenue");
-                        nameFeld.setText("");
-                        passwortFeld.setText("");
-                    } else {
                         Main.cl.show(Main.cardPanel, "UserMenue");
                         nameFeld.setText("");
-                        passwortFeld.setText("");
-                    }
+                        passwortFeld.setText("");          
                     //if der user noch nicht existiert
                 } else {
                     JOptionPane.showMessageDialog(null, "Die Anmeldedaten sind falsch");

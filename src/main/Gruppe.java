@@ -217,58 +217,39 @@ public class Gruppe extends javax.swing.JPanel {
             } catch (SQLException ex) {
                 Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
             }
+            s = "INSERT INTO gruppen(Name,creatorId)VALUES(?,?)";
             try {
-                s = "INSERT INTO gruppen(Name,creatorId)VALUES(?,?)";
-
-                try {
-                    ps = Utils.getConnection().prepareStatement(s);
-                    ps.setString(1, nameFeld.getText());
-                    ps.setInt(2, Main.userId);
-                    ps.executeUpdate();
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(Generator.class.getName()).log(Level.SEVERE, null, ex);
-
-                }
-                try {
-                    s = "SELECT ID FROM gruppen WHERE Name=? ";
-                    ps = Utils.getConnection().prepareStatement(s);
-                    ps.setString(1, nameFeld.getText());
-                    rs = ps.executeQuery();
-                    nameFeld.setText("");
-                    JOptionPane.showMessageDialog(null, "Neue Gruppe erfolgreich erstellt");
-                    while (rs.next()) {
-                        gruppenId = rs.getInt(1);
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                s = "INSERT INTO gruppenxmitglieder(userid,gruppenid)VALUES(?,?)";
-
-                try {
-                    ps = Utils.getConnection().prepareStatement(s);
-                    ps.setInt(1, Main.userId);
-                    ps.setInt(2, gruppenId);
-                    ps.executeUpdate();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Generator.class.getName()).log(Level.SEVERE, null, ex);
-
-                }
-
+                ps = Utils.getConnection().prepareStatement(s);
+                ps.setString(1, nameFeld.getText());
+                ps.setInt(2, Main.userId);
+                ps.executeUpdate();
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(Generator.class.getName()).log(Level.SEVERE, null, ex);
+                
+            }
+            try {
                 s = "SELECT ID FROM gruppen WHERE Name=? ";
                 ps = Utils.getConnection().prepareStatement(s);
                 ps.setString(1, nameFeld.getText());
                 rs = ps.executeQuery();
+                nameFeld.setText("");
+                JOptionPane.showMessageDialog(null, "Neue Gruppe erfolgreich erstellt");
                 while (rs.next()) {
                     gruppenId = rs.getInt(1);
                 }
-                s = "INSERT INTO userxgruppen(userid,gruppenid)VALUES(?,?)";
+            } catch (SQLException ex) {
+                Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            s = "INSERT INTO gruppenxmitglieder(userid,gruppenid)VALUES(?,?)";
+            try {
                 ps = Utils.getConnection().prepareStatement(s);
                 ps.setInt(1, Main.userId);
                 ps.setInt(2, gruppenId);
                 ps.executeUpdate();
             } catch (SQLException ex) {
-                Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Generator.class.getName()).log(Level.SEVERE, null, ex);
+                
             }
 
             Gruppe.liste();
