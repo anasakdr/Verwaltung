@@ -29,8 +29,8 @@ import static main.Gruppe.ps;
 import static main.Gruppe.rs;
 
 /**
- * Die Klasse Main enthält die Methode main und dient als Einstiegspunkt für das
- * Programm
+ * Die Klasse PasswortListe represntiert eine grphicher benutzeroberfläche,
+ * inder der Anwender seine Passwörter verwalten kann
  *
  * @author anas
  * @version 0.1
@@ -194,7 +194,11 @@ public class PasswortListe extends javax.swing.JPanel {
                 .addGap(22, 22, 22))
         );
     }// </editor-fold>//GEN-END:initComponents
-public void zeigen() {
+
+     /**
+     * Die Method zeigen zeigt der Anwender seine Passwörte an
+     */
+    public void zeigen() {
         suchFeld.setText("");
         model = (DefaultTableModel) passwortTabelle.getModel();
         rowCount = model.getRowCount();

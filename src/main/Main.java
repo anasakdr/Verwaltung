@@ -15,6 +15,7 @@ import javax.swing.SwingUtilities;
 /**
  * Die Klasse Main enthält die Methode main und dient als Einstiegspunkt
  * für das Programm
+ * 
  * @author anas
  * @version 0.1
  */

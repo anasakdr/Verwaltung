@@ -14,8 +14,11 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- *
+ *Die Klasse Login represntiert eine grphicher benutzeroberfläche
+ * in der sich der anwender anmelden kann oder zur Regestrierung gelangt
+ * 
  * @author AAlakdr
+ * @version 0.1
  */
 public class Login extends javax.swing.JPanel {
 PreparedStatement p = null;

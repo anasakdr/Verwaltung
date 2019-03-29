@@ -14,8 +14,11 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ *Die Klasse Gruppen represntiert eine grphicher benutzeroberfläche
+ * inder der anwender seine Gruppen verwalten kann.
+ * 
  * @author AAlakdr
+ * @version 0.1
  */
 public class Gruppe extends javax.swing.JPanel {
  public static PreparedStatement ps = null;
@@ -361,7 +364,7 @@ public class Gruppe extends javax.swing.JPanel {
         // if(selectedRow!=null)
         model = (DefaultTableModel) mitglieder.getModel();
         /// wenn die user nicht selected
-        if (mitglieder.getSelectedRow() > 0) {
+        if (mitglieder.getSelectedRow() >=0) {
             String sss = model.getValueAt(selectedRow, 1).toString();
             int ii = JOptionPane.showConfirmDialog(null, "Sind Sie sicher, dass Sie den Benutzer löschen wollen?", "Sicherheitsabfrage", JOptionPane.OK_CANCEL_OPTION);
             // wenn die antwort okay ist
@@ -378,6 +381,10 @@ public class Gruppe extends javax.swing.JPanel {
 
                 } catch (SQLException ex) {
                     Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if(userid==Main.userId){
+                    JOptionPane.showMessageDialog(null,"Sie Könne sich nicht selber Löschen");
+                    return;
                 }
 
                 try {

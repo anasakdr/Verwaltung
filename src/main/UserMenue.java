@@ -6,8 +6,11 @@
 package main;
 
 /**
- *
+ *Die Klasse UserMenue represntiert eine grphicher benutzeroberfläche und enthält das hauptmenue 
+ * inder der anwender zu den verschidenen funktion das programm gelangt helft den anwender 
+ * 
  * @author AAlakdr
+ * @version 0.1
  */
 public class UserMenue extends javax.swing.JPanel {
 

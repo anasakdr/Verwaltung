@@ -14,8 +14,11 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- *
+ *Die Klasse Regestrierung represntiert eine grphicher benutzeroberfläche
+ * in der sich der anwender Regestrieren kann oder zum Login gelangt
+ * 
  * @author AAlakdr
+ * @version 0.1
  */
 public class Registerierung extends javax.swing.JPanel {
  PreparedStatement ps = null;

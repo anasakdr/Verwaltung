@@ -24,8 +24,12 @@ import static main.Gruppe.ps;
 import static main.Gruppe.rs;
 
 /**
- *
+ *Die Klasse Generator represntiert eine grphicher benutzeroberfläche
+ * in der sich der anwender ein konfigurierbares Passwort erstellen.
+ * Das ersellte Passwort kann mit hilfe der Gruppenverwaltung verwaltet werden
+ * 
  * @author AAlakdr
+ * @version 0.1
  */
 public class Generator extends javax.swing.JPanel {
  int gruppenId;
@@ -265,7 +269,12 @@ public class Generator extends javax.swing.JPanel {
             evt.consume();
         }
     }//GEN-LAST:event_passFKeyTyped
- public static void liste() {
+
+     /**
+     * Die Method liste zeigt dem Anwender alle Gruppen in den er mitglied ist.
+     *
+     */
+    public static void liste() {
         gruppenBox.removeAllItems();
         try {
             String ss = "SELECT gruppen.Name FROM gruppen,gruppenxmitglieder,users WHERE gruppenxmitglieder.gruppenid=gruppen.ID AND gruppenxmitglieder.userid=users.ID AND users.ID=?";
@@ -281,6 +290,12 @@ public class Generator extends javax.swing.JPanel {
             Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+     /**
+     * Die Method generate erstellt auf grundlage der konfiguration des anwenders das Passwort 
+     *
+     * @param length Enthält die länge des Passworts
+     * @return gibt das generierte Passwort zurück
+     */
   public String generate(int length) {
         // Argument Validation.
         if(kleinZ.isSelected()||grossZ.isSelected()||sonderZ.isSelected()||zahlZ.isSelected()||alleZeichen.isSelected()){

@@ -80,7 +80,12 @@ public class Utils {
         }
         return sb.toString();
     }
-
+ /**
+     * Die Method verschlüsslelt den String welche der Funktion übergeben worde ist mit AES 
+     *
+     * @param pass enthält den zu verschlüsselten wert 
+     * @return gibt den verschlüsselten wert zurück
+     */
     public static String aesEncryption(String pass) throws UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         // Das Passwort bzw der Schluesseltext
         String keyStr = "geheim";
@@ -105,7 +110,12 @@ public class Utils {
         String geheim = myEncoder.encode(encrypted);
         return geheim;
     }
-
+ /**
+     * Die Method entschlüsslelt den String welche der Funktion übergeben worde ist mit AES 
+     *
+     * @param passwortGeheim enthält den  verschlüsselten wert 
+     * @return gibt den entchlüsselten wert zurück
+     */
     public static String aesDecryption(String passwortGeheim) throws NoSuchAlgorithmException, NoSuchPaddingException, UnsupportedEncodingException, IOException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
 
         // Das Passwort bzw der Schluesseltext
@@ -127,6 +137,7 @@ public class Utils {
         byte[] crypted2 = myDecoder2.decodeBuffer(geheim);
 
 // Entschluesseln
+
         Cipher cipher2 = Cipher.getInstance("AES");
         cipher2.init(Cipher.DECRYPT_MODE, secretKeySpec);
         byte[] cipherData2 = cipher2.doFinal(crypted2);
