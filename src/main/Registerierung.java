@@ -141,7 +141,7 @@ public class Registerierung extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-     String query = "SELECT Mail FROM users WHERE Mail =?";
+     String query = "SELECT Mail FROM benutzer WHERE Mail =?";
         String name = nameFeld.getText();
         String mail = mailFeld.getText();
         String pass = String.valueOf(passFeld.getPassword());
@@ -167,7 +167,7 @@ public class Registerierung extends javax.swing.JPanel {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        String query1 = "INSERT INTO users(Name,Mail,Passwort,Pos)VALUES(?,?,?,?)";
+        String query1 = "INSERT INTO benutzer(Name,Mail,Passwort,Pos)VALUES(?,?,?,?)";
         try {
             ps = Main.conn.prepareStatement(query1);
             ps.setString(1, name);

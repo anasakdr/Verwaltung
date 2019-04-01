@@ -244,7 +244,7 @@ public class Gruppe extends javax.swing.JPanel {
             } catch (SQLException ex) {
                 Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
             }
-            s = "INSERT INTO gruppenxmitglieder(userid,gruppenid)VALUES(?,?)";
+            s = "INSERT INTO gruppenmitglieder(userid,gruppenid)VALUES(?,?)";
             try {
                 ps = Utils.getConnection().prepareStatement(s);
                 ps.setInt(1, Main.userId);
@@ -294,7 +294,7 @@ public class Gruppe extends javax.swing.JPanel {
             int gruppenId = 0;
             if (!Utils.isEmpty(mailFeld.getText())) {
                 try {
-                    s = "SELECT ID FROM users WHERE Mail=? ";
+                    s = "SELECT ID FROM benutzer WHERE Mail=? ";
                     ps = Utils.getConnection().prepareStatement(s);
 
                     ps.setString(1, mailFeld.getText());
@@ -321,7 +321,7 @@ public class Gruppe extends javax.swing.JPanel {
                     Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 try {
-                    s = "SELECT userid, gruppenid FROM gruppenxmitglieder WHERE userid=? AND gruppenid=? ";
+                    s = "SELECT userid, gruppenid FROM gruppenmitglieder WHERE userid=? AND gruppenid=? ";
                     ps = Utils.getConnection().prepareStatement(s);
                     ps.setInt(1, userid);
                     ps.setInt(2, gruppenId);
@@ -335,7 +335,7 @@ public class Gruppe extends javax.swing.JPanel {
                     Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-                s = "INSERT INTO gruppenxmitglieder(userid,gruppenid)VALUES(?,?)";
+                s = "INSERT INTO gruppenmitglieder(userid,gruppenid)VALUES(?,?)";
                 try {
                     ps = Utils.getConnection().prepareStatement(s);
                     ps.setInt(1, userid);
@@ -370,7 +370,7 @@ public class Gruppe extends javax.swing.JPanel {
             // wenn die antwort okay ist
             if (ii == JOptionPane.OK_OPTION) {
                 try {
-                    s = "SELECT ID FROM users WHERE Mail=? ";
+                    s = "SELECT ID FROM benutzer WHERE Mail=? ";
                     ps = Utils.getConnection().prepareStatement(s);
 
                     ps.setString(1, sss);
@@ -388,7 +388,7 @@ public class Gruppe extends javax.swing.JPanel {
                 }
 
                 try {
-                    ps = Utils.getConnection().prepareStatement("DELETE FROM  gruppenxmitglieder WHERE userid=?");
+                    ps = Utils.getConnection().prepareStatement("DELETE FROM  gruppenmitglieder WHERE userid=?");
                     ps.setInt(1, userid);
                     ps.executeUpdate();
                     Gruppe.liste();
@@ -428,7 +428,7 @@ public class Gruppe extends javax.swing.JPanel {
             Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
-            String query = "SELECT * FROM users u ,gruppenxmitglieder mit  WHERE u.ID=mit.userid AND mit.gruppenid=?";
+            String query = "SELECT * FROM benutzer u ,gruppenmitglieder mit  WHERE u.ID=mit.userid AND mit.gruppenid=?";
             ps = Utils.getConnection().prepareStatement(query);
             ps.setInt(1, gruppenId);
             rs = ps.executeQuery();
@@ -474,7 +474,7 @@ public void show1() {
         }
 
         try {
-            String query = "SELECT u.Name,u.Mail FROM users u,gruppenxmitglieder gm WHERE gm.userid=u.ID AND gm.gruppenid=? ";
+            String query = "SELECT u.Name,u.Mail FROM benutzer u,gruppenmitglieder gm WHERE gm.userid=u.ID AND gm.gruppenid=? ";
 
             ps = Utils.getConnection().prepareStatement(query);
             ps.setInt(1, gruppenId);

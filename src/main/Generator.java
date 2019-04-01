@@ -277,7 +277,7 @@ public class Generator extends javax.swing.JPanel {
     public static void liste() {
         gruppenBox.removeAllItems();
         try {
-            String ss = "SELECT gruppen.Name FROM gruppen,gruppenxmitglieder,users WHERE gruppenxmitglieder.gruppenid=gruppen.ID AND gruppenxmitglieder.userid=users.ID AND users.ID=?";
+            String ss = "SELECT gruppen.Name FROM gruppen,gruppenmitglieder,benutzer WHERE gruppenmitglieder.gruppenid=gruppen.ID AND gruppenmitglieder.userid=benutzer.ID AND benutzer.ID=?";
             ps = Utils.getConnection().prepareStatement(ss);
             ps.setInt(1, Main.userId);
             rs = ps.executeQuery();
@@ -351,11 +351,11 @@ public class Generator extends javax.swing.JPanel {
 
     private void privateBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_privateBActionPerformed
 
-        String s = "INSERT INTO private(userid,Passwort,Verwendung)VALUES(?,?,?)";
+        String s = "INSERT INTO privatepasswoerte(userid,Passwort,Verwendung)VALUES(?,?,?)";
         PreparedStatement ps = null;
 
         if (!Utils.isEmpty(passF.getText(), verwendungFeld.getText())) {
-            String ss = "SELECT * FROM private WHERE Verwendung =? and userid=?";
+            String ss = "SELECT * FROM privatepasswoerte WHERE Verwendung =? and userid=?";
             try {
                 ps = Utils.getConnection().prepareStatement(ss);
                 ps.setString(1, verwendungFeld.getText());
@@ -414,7 +414,7 @@ public class Generator extends javax.swing.JPanel {
             } catch (SQLException ex) {
                 Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
             }
-            String ss = "SELECT * FROM offentlich WHERE Verwendung =? AND gruppenid=?";
+            String ss = "SELECT * FROM gruppenpasswoerter WHERE Verwendung =? AND gruppenid=?";
             try {
                 ps = Utils.getConnection().prepareStatement(ss);
                 ps.setString(1, verwendungFeld.getText());
@@ -427,7 +427,7 @@ public class Generator extends javax.swing.JPanel {
             } catch (SQLException ex) {
                 Logger.getLogger(Generator.class.getName()).log(Level.SEVERE, null, ex);
             }
-            s = "INSERT INTO offentlich(passwort,gruppenid,Verwendung)VALUES(?,?,?)";
+            s = "INSERT INTO gruppenpasswoerter(passwort,gruppenid,Verwendung)VALUES(?,?,?)";
             PreparedStatement ps = null;
             if (!Utils.isEmpty(passF.getText(), verwendungFeld.getText())) {
                 try {
