@@ -167,13 +167,12 @@ public class Registerierung extends javax.swing.JPanel {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        String query1 = "INSERT INTO benutzer(Name,Mail,Passwort,Pos)VALUES(?,?,?,?)";
+        String query1 = "INSERT INTO benutzer(Name,Mail,Passwort)VALUES(?,?,?)";
         try {
             ps = Main.conn.prepareStatement(query1);
             ps.setString(1, name);
             ps.setString(2, mail);
             ps.setString(3, Utils.sha256(pass));
-            ps.setString(4, "0");
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Registrierung erfolgreich");
             //wieder zu Login Layout Zurück
