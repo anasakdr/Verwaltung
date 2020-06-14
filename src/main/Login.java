@@ -149,12 +149,13 @@ PreparedStatement p = null;
         //frage ob die Fielfe Leer sind
         if (!nameFeld.getText().isEmpty() && !pass.isEmpty()) {
             try {
-                p = Utils.getConnection().prepareStatement("SELECT * FROM benutzer WHERE Name=? and Passwort=?");
+                p = Utils.getConnection().prepareStatement("SELECT * FROM users WHERE Name=? and Passwort=? ");
                 p.setString(1, name);
                 //passwort werd geHasht
-                p.setString(2, Utils.sha256(pass));
-                rs = p.executeQuery();
+              p.setString(2, Utils.sha256(pass));                
+                rs = p.executeQuery();  
                 if (rs.next()) {
+                    System.out.println(rs.getInt(1));
                     Main.userId = rs.getInt(1);
                         Main.cl.show(Main.cardPanel, "UserMenue");
                         nameFeld.setText("");

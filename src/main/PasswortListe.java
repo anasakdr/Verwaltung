@@ -208,7 +208,7 @@ public class PasswortListe extends javax.swing.JPanel {
         }
         if (passwortListe.getSelectedItem().toString() == "Privat") {
             try {
-                String query = "SELECT * FROM privatepasswoerte WHERE userid=?";
+                String query = "SELECT * FROM keyring WHERE userid=?";
 
                 ps = Utils.getConnection().prepareStatement(query);
                 ps.setInt(1, Main.userId);
@@ -235,7 +235,7 @@ public class PasswortListe extends javax.swing.JPanel {
             }
         } else {
             try {
-                String query = "SELECT  g.passwort,g.Verwendung,ge.Name FROM gruppenpasswoerter g ,gruppenmitglieder m,gruppen ge \n"
+                String query = "SELECT  g.passwort,g.Verwendung,ge.Name FROM gruppenxpasswort g ,gruppenxmitglieder m,gruppen ge \n"
                         + "WHERE g.gruppenid=m.gruppenid AND ge.ID=m.gruppenid AND m.userid=?";
 
                 ps = Utils.getConnection().prepareStatement(query);
@@ -287,7 +287,7 @@ public class PasswortListe extends javax.swing.JPanel {
         }
         if (passwortListe.getSelectedItem().toString() == "Privat") {
             try {
-                String query = "SELECT * FROM privatepasswoerte WHERE verwendung LIKE ? AND userid=?";
+                String query = "SELECT * FROM keyring WHERE verwendung LIKE ? AND userid=?";
 
                 ps = Utils.getConnection().prepareStatement(query);
                 ps.setString(1, suchFeld.getText() + "%");
@@ -303,7 +303,7 @@ public class PasswortListe extends javax.swing.JPanel {
             }
         } else {
             try {
-                String query = "SELECT  gp.passwort,gp.Verwendung,gr.Name FROM gruppenmitglieder gm,gruppenpasswoerter gp ,gruppen gr ,benutzer us WHERE  gp.gruppenid=gr.ID AND gm.gruppenid=gp.gruppenid AND us.ID=gm.userid AND gm.userid=? AND gp.Verwendung like ?";
+                String query = "SELECT  gp.passwort,gp.Verwendung,gr.Name FROM gruppenxmitglieder gm,gruppenxpasswort gp ,gruppen gr ,users us WHERE  gp.gruppenid=gr.ID AND gm.gruppenid=gp.gruppenid AND us.ID=gm.userid AND gm.userid=? AND gp.Verwendung like ?";
 
                 ps = Utils.getConnection().prepareStatement(query);
                 ps.setInt(1, Main.userId);
@@ -345,7 +345,7 @@ public class PasswortListe extends javax.swing.JPanel {
                 ii = JOptionPane.showConfirmDialog(null, "Sind Sie sicher, dass Sie dieses Passwort ändern wollen?", "Sicherheitsabfrage", JOptionPane.OK_CANCEL_OPTION);
                 if (ii == JOptionPane.OK_OPTION) {
                     try {
-                        String s = "SELECT ID FROM privatepasswoerte WHERE Verwendung=? ";
+                        String s = "SELECT ID FROM keyring WHERE Verwendung=? ";
                         ps = Utils.getConnection().prepareStatement(s);
 
                         ps.setString(1, sss);
@@ -376,7 +376,7 @@ public class PasswortListe extends javax.swing.JPanel {
                             if (!verwendung.getText().isEmpty()) {
                                 verwend = verwendung.getText();
                             }
-                            ps = Utils.getConnection().prepareStatement("UPDATE privatepasswoerte SET Passwort=?,Verwendung=? WHERE ID=?");
+                            ps = Utils.getConnection().prepareStatement("UPDATE keyring SET Passwort=?,Verwendung=? WHERE ID=?");
                             ps.setString(1, Utils.aesEncryption(pass));
                             ps.setString(2, verwend);
                             ps.setInt(3, passID);
@@ -434,7 +434,7 @@ public class PasswortListe extends javax.swing.JPanel {
                 ii = JOptionPane.showConfirmDialog(null, "Sind Sie sicher, dass Sie dieses Passwort ändern wollen?", "Sicherheitsabfrage", JOptionPane.OK_CANCEL_OPTION);
                 if (ii == JOptionPane.OK_OPTION) {
                     try {
-                        String s = "SELECT ID FROM gruppenpasswoerter WHERE Verwendung=? ";
+                        String s = "SELECT ID FROM gruppenxpasswort WHERE Verwendung=? ";
                         ps = Utils.getConnection().prepareStatement(s);
 
                         ps.setString(1, sss);
@@ -466,7 +466,7 @@ public class PasswortListe extends javax.swing.JPanel {
                             }
 
                             //String query = "UPDATE gruppenxpasswort SET passwort=?,Verwendung=? gruppenxpasswort INNER JOIN gruppen ON gruppen.ID = gruppenxpasswort.gruppenid WHERE gruppen.creatorId=? AND gruppenxpasswort.ID=?";
-                            String query = "UPDATE gruppenpasswoerter INNER JOIN gruppen ON gruppen.ID = gruppenpasswoerter.gruppenid SET passwort=?,Verwendung=? WHERE gruppen.creatorId=? AND gruppenpasswoerter.ID=?";
+                            String query = "UPDATE gruppenpasswort INNER JOIN gruppen ON gruppen.ID = gruppenpasswort.gruppenid SET passwort=?,Verwendung=? WHERE gruppen.creatorId=? AND gruppenpasswoerter.ID=?";
                             ps = Utils.getConnection().prepareStatement(query);
                             ps.setString(1, Utils.aesEncryption(pass));
                             ps.setString(2, verwend);
@@ -529,7 +529,7 @@ public class PasswortListe extends javax.swing.JPanel {
                 if (ii == JOptionPane.OK_OPTION) {
 
                     try {
-                        String s = "SELECT ID FROM privatepasswoerte WHERE Verwendung=? ";
+                        String s = "SELECT ID FROM keyring WHERE Verwendung=? ";
                         ps = Utils.getConnection().prepareStatement(s);
 
                         ps.setString(1, sss);
@@ -542,7 +542,7 @@ public class PasswortListe extends javax.swing.JPanel {
                         Logger.getLogger(Gruppe.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     try {
-                        ps = Utils.getConnection().prepareStatement("DELETE FROM  privatepasswoerte WHERE ID=?");
+                        ps = Utils.getConnection().prepareStatement("DELETE FROM  keyring WHERE ID=?");
                         ps.setInt(1, passID);
                         ps.executeUpdate();
                         zeigen();
@@ -573,7 +573,7 @@ public class PasswortListe extends javax.swing.JPanel {
                 }
 
                 try {
-                    String s = "SELECT ID FROM gruppenpasswoerter WHERE Verwendung=? ";
+                    String s = "SELECT ID FROM gruppenpasswort WHERE Verwendung=? ";
                     ps = Utils.getConnection().prepareStatement(s);
 
                     ps.setString(1, sss);
@@ -591,7 +591,7 @@ public class PasswortListe extends javax.swing.JPanel {
                 if (ii == JOptionPane.OK_OPTION) {
                     {
                         try {
-                            String query = "DELETE gruppenpasswoerter FROM gruppenpasswoerter INNER JOIN gruppen ON gruppen.ID = gruppenpasswoerter.gruppenid WHERE gruppen.creatorId=? AND gruppenpasswoerter.ID=?";
+                            String query = "DELETE gruppenpasswoert FROM gruppenpasswoerter INNER JOIN gruppen ON gruppen.ID = gruppenpasswoerter.gruppenid WHERE gruppen.creatorId=? AND gruppenpasswoerter.ID=?";
 
                             ps = Utils.getConnection().prepareStatement(query);
                             ps.setInt(1, Main.userId);

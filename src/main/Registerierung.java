@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import static main.Gruppe.ps;
 
 /**
  *Die Klasse Regestrierung represntiert eine grphicher benutzeroberfläche
@@ -48,7 +49,7 @@ public class Registerierung extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        anlegen = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(11, 102, 122));
 
@@ -75,10 +76,10 @@ public class Registerierung extends javax.swing.JPanel {
             }
         });
 
-        jButton2.setText("Benutzer anlegen");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        anlegen.setText("Benutzer anlegen");
+        anlegen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                anlegenActionPerformed(evt);
             }
         });
 
@@ -106,7 +107,7 @@ public class Registerierung extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
-                        .addComponent(jButton2))
+                        .addComponent(anlegen))
                     .addComponent(nameFeld)
                     .addComponent(rePassFeld)
                     .addComponent(passFeld)
@@ -135,13 +136,13 @@ public class Registerierung extends javax.swing.JPanel {
                 .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(anlegen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(39, 39, 39))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-     String query = "SELECT Mail FROM benutzer WHERE Mail =?";
+    private void anlegenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anlegenActionPerformed
+     String query = "SELECT Mail FROM users WHERE Mail =?";
         String name = nameFeld.getText();
         String mail = mailFeld.getText();
         String pass = String.valueOf(passFeld.getPassword());
@@ -162,14 +163,14 @@ public class Registerierung extends javax.swing.JPanel {
             //if der user schon existiert
             if (rs.next()) {
                 JOptionPane.showMessageDialog(null, "E-Mail existiert bereits");
-                return;
+                return;           
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        String query1 = "INSERT INTO benutzer(Name,Mail,Passwort)VALUES(?,?,?)";
+        String query1 = "INSERT INTO users(Name,Mail,Passwort)VALUES(?,?,?)";
         try {
-            ps = Main.conn.prepareStatement(query1);
+            ps = Utils.getConnection().prepareStatement(query1);
             ps.setString(1, name);
             ps.setString(2, mail);
             ps.setString(3, Utils.sha256(pass));
@@ -190,7 +191,7 @@ public class Registerierung extends javax.swing.JPanel {
 
         }
 
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_anlegenActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
            Main.cl.show(Main.cardPanel, "Login");
@@ -198,8 +199,8 @@ public class Registerierung extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton anlegen;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
